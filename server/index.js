@@ -33,8 +33,6 @@ app.get('/basket', (req, res, next) => {
 
 app.delete('/basket/:id', (req, res, next) => {
   let basketId = parseInt(req.params.id);
-  console.log(req.params.id);
-  console.log(baskets.has(basketId));
   let code = baskets.has(basketId) ? 200 : 404;
   let response = { 'error': 'Basket not found' }; 
   if (code === 200) {
