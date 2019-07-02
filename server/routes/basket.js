@@ -1,24 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const basketController = require('../controller/basketController')
 
 const BASKETS = new Map();
-const ITEMS = {
-  VOUCHER: {
-    name: 'Cabify Voucher',
-    price: 5.0
-  },
-  TSHIRT: {
-    name: 'Cabify T-Shirt',
-    price: 20.0
-  },
-  MUG: {
-    name: 'Cabify Coffee Mug',
-    price: 7.5
-  }
-};
+const ITEMS = require('../model/items');
 
 router.post('', (req, res, next) => {
-  let basket = req.body.basket || { amount: 0, items: {} };
+  let basket = req.body.basket || { totalPrice: 0, items: {} };
   let code = basket.id ? 405 : 200;
   let response = { error : 'ID not allowed in a POST request.' };
   if (code == 200) {
@@ -43,7 +31,7 @@ router.post('/:id/addItem/:itemCode', (req, res, next) => {
       basket.items[itemCode] = 0;
     }
     basket.items[itemCode]++;
-    basket.amount += item.price;
+    basket.totalPrice = basketController.calculateTotalPrice(basket);
     res.status(200).send(basket);
   }
 });
