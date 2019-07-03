@@ -19,3 +19,13 @@ Entry point for the entire application
 
 ## client ##
 This folder is much more simple. It only has an _index.html_ that is served by the server, and some styles and basic AngularJS.
+
+
+# Installation notes #
+Installation is simple as I used npm as dependency manager. If you already have npm installed on your computer, you just have to run this two commands:
+`npm install`
+`npm run server:start`
+
+And that's it! You can now navigate to `http://localhost:3000` and start trying the app.
+
+Note that server will start running on *port 3000*. If you want to run it on another port, you can edit _/server/index.js_
