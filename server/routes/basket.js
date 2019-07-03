@@ -7,7 +7,7 @@ const ITEMS = require('../model/items');
 
 router.post('', (req, res, next) => {
   let basket = req.body.basket || { totalPrice: 0, items: {} };
-  let code = basket.id ? 405 : 200;
+  const code = basket.id ? 405 : 200;
   let response = { error : 'ID not allowed in a POST request.' };
   if (code == 200) {
     basket.id = BASKETS.size + 1;
@@ -41,8 +41,8 @@ router.get('', (req, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
-  let basketId = parseInt(req.params.id);
-  let code = basketId && BASKETS.has(basketId) ? 200 : 404;
+  const basketId = parseInt(req.params.id);
+  const code = basketId && BASKETS.has(basketId) ? 200 : 404;
   let response = code === 200
                ? BASKETS.get(basketId)
                : { error: 'Basket not found' }
@@ -50,12 +50,34 @@ router.get('/:id', (req, res, next) => {
 });
 
 router.delete('/:id', (req, res, next) => {
-  let basketId = parseInt(req.params.id);
-  let code = BASKETS.has(basketId) ? 200 : 404;
+  const basketId = parseInt(req.params.id);
+  const code = BASKETS.has(basketId) ? 200 : 404;
   let response = { error: 'Basket not found' }; 
   if (code === 200) {
     response = BASKETS.get(basketId);
     BASKETS.delete(basketId);
+  }
+  res.status(code).send(response);
+});
+
+router.delete('/:id/removeItem/:itemCode', (req, res, next) => {
+  const basketId = parseInt(req.params.id);
+  const itemCode = req.params.itemCode;
+  let code = BASKETS.has(basketId) ? 200 : 404;
+  let response = { error: 'Basket not found' };
+  if (code === 200) {
+    const basket = BASKETS.get(basketId);
+    if (!basket.items[itemCode]) {
+      code = 400;
+      response = { error: 'Item not found in basket.' }
+    } else {
+      basket.items[itemCode]--
+      if (basket.items[itemCode] === 0) {
+        delete basket.items[itemCode]; //Just to keep the object clean
+      }
+      basket.totalPrice = basketController.calculateTotalPrice(basket);
+      response = basket;
+    }
   }
   res.status(code).send(response);
 });
