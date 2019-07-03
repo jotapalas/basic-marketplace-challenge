@@ -20,7 +20,7 @@ router.post('', (req, res, next) => {
 router.post('/:id/addItem/:itemCode', (req, res, next) => {
   const itemCode = req.params.itemCode;
   const basketId = parseInt(req.params.id);
-  if ( !itemCode in ITEMS ) {
+  if ( !ITEMS[itemCode] ) {
     res.status(404).send({ error: 'Item not found.' });
   } else if ( !BASKETS.has(basketId) ) {
     res.status(404).send({ error: 'Basket not found.' });

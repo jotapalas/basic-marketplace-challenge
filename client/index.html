@@ -11,6 +11,7 @@
 
   <!-- SCROLLS -->
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"><!-- load bootstrap -->
+  <link rel="stylesheet" href="./style.css">
   <style>
     html                    { overflow-y:scroll; }
     body                    { padding-top:50px; }
@@ -37,16 +38,39 @@
       <div class="col-sm-4 col-sm-offset-4">
 
         <!-- LOOP OVER THE BASKETS IN $scope.baskets -->
-        <div class="checkbox" ng-repeat="basket in baskets">
-          <label>
-            <input type="checkbox" ng-click="deleteBasket(basket.id)">BASKET {{ basket.id }} {{basket.deleted}}
-          </label>
-        </div>
+          <div ng-repeat="basket in baskets">
+            <div class="container">
+              <h3 class="accordion">
+                BASKET {{ basket.id }}
+              </h3>
+              <div class="accordion-content container">
+                <div class="row" ng-repeat="(itemCode, item) in items">
+                  <div class="col col-sm-2">{{ item.name }}: {{ basket.items[itemCode] || 0 }}</div>
+                  <div class="col col-sm-2">
+                    <button class="btn btn-success" ng-click="addItem(basket.id, itemCode)">+</button>
+                    <button class="btn btn-warning" ng-click="removeItem(basket.id, itemCode)">-</button>
+                  </div>
+                </div>
+                <div class="row totalPrice">
+                  <div class="col-sm-2">
+                    <strong>Total:</strong> {{ basket.totalPrice }}€
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-2">
+                    <button ng-click="deleteBasket(basket.id)" class="btn btn-danger">
+                      Delete basket
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
       </div>
     </div>
 
     <div id="new-basket-button">
-      <button ng-click="newBasket()">New basket</button>
+      <button ng-click="newBasket()" class="btn btn-primary">New basket</button>
     </div>
   </div>
 

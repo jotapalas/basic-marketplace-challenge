@@ -1,0 +1,21 @@
+*{
+  font-family: Arial;
+  font-size: 13px;
+  line-height: 140%;
+}
+.accordion{
+  margin: 0;
+  padding: 10px;
+  background: #ddd;
+  color: #333;
+  text-decoration: none;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 1px;
+  font-size: medium;
+}
+.accordion-content{
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 1px 0;
+}
