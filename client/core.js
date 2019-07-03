@@ -1,13 +1,11 @@
 var marketplace = angular.module('marketplace', []);
 
 function mainController($scope, $http) {
-  console.log("HOLA");
-
   // when landing on the page, get all baskets and show them
   $http.get('/api/basket')
   .success(function(data) {
-    $scope.baskets = data;
-    console.log(data);
+    $scope.baskets = data.baskets;
+    $scope.basketCount = data.count;
   })
   .error(function(data) {
     console.log('Error: ' + data);
@@ -16,9 +14,19 @@ function mainController($scope, $http) {
   $http.get('/api/item')
   .success(function(data) {
     $scope.items = data;
-    console.log(data);
   })
   .error(function(data) {
     console.log('Error: ' + data);
   });
+
+  $scope.newBasket = function() {
+    $http.post('/api/basket')
+    .success(function(newBasket) {
+      $scope.baskets[newBasket.id] = newBasket;
+      $scope.basketCount++;
+    })
+    .error(function(err) {
+      console.log('Error: ' + err);
+    });
+  }
 }

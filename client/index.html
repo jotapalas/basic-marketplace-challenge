@@ -27,22 +27,26 @@
 <body ng-controller="mainController">
   <div class="container">
 
-    <!-- HEADER AND TODO COUNT -->
+    <!-- HEADER AND BASKET COUNT -->
     <div class="jumbotron text-center">
-      <h1>My baskets <span class="label label-info">{{ baskets.length }}</span></h1>
+      <h1>My baskets <span class="label label-info">{{ basketCount }}</span></h1>
     </div>
 
     <!-- BASKET LIST -->
-    <div id="todo-list" class="row">
+    <div id="basket-list" class="row">
       <div class="col-sm-4 col-sm-offset-4">
 
         <!-- LOOP OVER THE BASKETS IN $scope.baskets -->
         <div class="checkbox" ng-repeat="basket in baskets">
           <label>
-            <input type="checkbox" ng-click="deleteBasket(basket.id)">BASKET {{ basket.id }}
+            <input type="checkbox" ng-click="deleteBasket(basket.id)">BASKET {{ basket.id }} {{basket.deleted}}
           </label>
         </div>
       </div>
+    </div>
+
+    <div id="new-basket-button">
+      <button ng-click="newBasket()">New basket</button>
     </div>
   </div>
 

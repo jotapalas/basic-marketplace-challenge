@@ -37,7 +37,18 @@ router.post('/:id/addItem/:itemCode', (req, res, next) => {
 });
 
 router.get('', (req, res, next) => {
-  res.status(200).send(BASKETS);
+  const jsonResponse = {};
+  const basketsJson = {};
+  let basketCount = 0;
+  BASKETS.forEach((value, key) => {
+    if(!value.deleted) {
+      basketsJson[key] = value;
+      basketCount++;
+    }
+  })
+  jsonResponse.baskets = basketsJson; 
+  jsonResponse.count = basketCount;
+  res.status(200).send(jsonResponse);
 });
 
 router.get('/:id', (req, res, next) => {
@@ -55,7 +66,8 @@ router.delete('/:id', (req, res, next) => {
   let response = { error: 'Basket not found' }; 
   if (code === 200) {
     response = BASKETS.get(basketId);
-    BASKETS.delete(basketId);
+    response.deleted = true; //soft delete
+    BASKETS.set(response.id, response);
   }
   res.status(code).send(response);
 });
